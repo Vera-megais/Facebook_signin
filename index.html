@@ -32,6 +32,20 @@
   <script>
     $(function () {
 
+      FB.getLoginStatus(function (res) {
+        if (res.status === 'connected') {
+          if (res.status === 'connected') {
+            FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
+              console.log(res);
+              addUser(res.picture.data.url, res.name);
+              localStorage.setItem("facebook_signin", "true");
+            });
+          } else {
+            console.log('尚未登入');
+          }
+        }
+      });
+
       // Facebook javascript SDK
       (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
