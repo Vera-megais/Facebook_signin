@@ -42,18 +42,15 @@
       }(document, 'script', 'facebook-jssdk'));
 
       // 初始化Facebook外掛
-      fbLogin();
-      async function fbLogin() {
-        window.fbAsyncInit = await function () {
-          FB.init({
-            appId: '841924241107250', // 應用程式編號
-            cookie: true,
-            xfbml: true,
-            version: 'v19.0' // fb版本
-          });
-          FB.AppEvents.logPageView();
-        };
-      }
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '841924241107250', // 應用程式編號
+          cookie: true,
+          xfbml: true,
+          version: 'v19.0' // fb版本
+        });
+        FB.AppEvents.logPageView();
+      };
 
       window.FB.getLoginStatus(function (res) {
         if (res.status === 'connected') {
