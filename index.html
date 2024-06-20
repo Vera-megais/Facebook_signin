@@ -52,6 +52,22 @@
         FB.AppEvents.logPageView();
       };
 
+      FB.login(function (res) {
+        console.log(res);
+        if (res.status === 'connected') {
+          FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
+            console.log(res);
+            addUser(res.picture.data.url, res.name);
+            localStorage.setItem("facebook_signin", "true");
+          });
+        } else {
+          console.log('尚未登入');
+        }
+      }, {
+        scope: 'email, public_profile',
+        return_scopes: true
+      });
+
       // 登入按鈕
       $(".fb_signin").click(function () {
         FB.login(function (res) {
