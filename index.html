@@ -30,7 +30,7 @@
   <p></p>
 
   <script>
-    $(function () {
+    $(window).on('load', function () {
 
       // Facebook javascript SDK
       (function (d, s, id) {
@@ -51,6 +51,22 @@
         });
         FB.AppEvents.logPageView();
       };
+
+    })
+
+    $(function () {
+
+      FB.getLoginStatus(function (res) {
+        if (res.status === 'connected') {
+          FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
+            console.log(res);
+            addUser(res.picture.data.url, res.name);
+            localStorage.setItem("facebook_signin", "true");
+          });
+        } else {
+          console.log('尚未登入');
+        }
+      });
 
       // 登入按鈕
       $(".fb_signin").click(function () {
