@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook_signin</title>
+
+  <!-- js -->
+  <script src="./js/jquery-3.6.1.min.js"></script>
+</head>
+
+<body>
+
+  <input type="button" class="fb_signin" value="Fackbook登入">
+  <input type="button" class="fb_signout" value="Fackbook登出">
+  <img src="" alt="">
+  <p></p>
+
+  <script>
+    $(function () {
+
+      // Facebook javascript SDK
+      (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+      // 初始化Facebook外掛
+      window.fbAsyncInit = function () {
+        FB.init({
+          appId: '841924241107250', // 應用程式編號
+          cookie: true,
+          xfbml: true,
+          version: 'v19.0' // fb版本
+        });
+        FB.AppEvents.logPageView();
+      };
+
+      // 登入按鈕
+      $(".fb_signin").click(function () {
+        FB.login(function (res) {
+          console.log(res);
+          if (res.status === 'connected') {
+            FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
+              console.log(res);
+              addUser(res.picture.data.url, res.name);
+              localStorage.setItem("google_signin", "true");
+            });
+          } else {
+            console.log('尚未登入');
+          }
+        }, {
+          scope: 'email, public_profile',
+          return_scopes: true
+        });
+      })
+
+      // 登出按鈕
+      $(".fb_signout").click(function () {
+        FB.logout(function (res) {
+          console.log(res);
+          localStorage.removeItem("google_signin");
+        });
+      })
+
+      function addUser(img, name) {
+        $("img").attr("src", img);
+        $("p").text(name);
+      }
+
+      function removeUser() {
+        $("img").attr("src", "");
+        $("p").text("");
+      }
+
+    })
+  </script>
+
+</body>
+
+</html>
