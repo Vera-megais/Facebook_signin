@@ -56,7 +56,7 @@
 
     $(function () {
 
-      FB.getLoginStatus(function (res) {
+      window.FB.getLoginStatus(function (res) {
         if (res.status === 'connected') {
           FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
             console.log(res);
