@@ -48,7 +48,7 @@
             FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
               console.log(res);
               addUser(res.picture.data.url, res.name);
-              localStorage.setItem("google_signin", "true");
+              localStorage.setItem("facebook_signin", "true");
             });
           } else {
             console.log('尚未登入');
@@ -64,7 +64,7 @@
         FB.logout(function (res) {
           console.log(res);
           removeUser();
-          localStorage.removeItem("google_signin");
+          localStorage.removeItem("facebook_signin");
         });
       })
 
