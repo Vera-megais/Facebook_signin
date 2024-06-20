@@ -63,6 +63,7 @@
       $(".fb_signout").click(function () {
         FB.logout(function (res) {
           console.log(res);
+          removeUser();
           localStorage.removeItem("google_signin");
         });
       })
