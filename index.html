@@ -54,7 +54,13 @@
 
       window.FB.getLoginStatus(function (res) {
         if (res.status === 'connected') {
-          console.log("登入成功");
+          FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
+            console.log(res);
+            addUser(res.picture.data.url, res.name);
+            localStorage.setItem("facebook_signin", "true");
+          });
+        } else {
+          console.log('尚未登入');
         }
       });
 
