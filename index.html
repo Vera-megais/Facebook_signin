@@ -32,6 +32,29 @@
   <script>
     $(function () {
 
+      // Facebook javascript SDK
+      (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+      // 初始化Facebook外掛
+      fbLogin();
+      async function fbLogin() {
+        window.fbAsyncInit = await function () {
+          FB.init({
+            appId: '841924241107250', // 應用程式編號
+            cookie: true,
+            xfbml: true,
+            version: 'v19.0' // fb版本
+          });
+          FB.AppEvents.logPageView();
+        };
+      }
+
       window.FB.getLoginStatus(function (res) {
         if (res.status === 'connected') {
           FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
@@ -43,26 +66,6 @@
           console.log('尚未登入');
         }
       });
-
-      // Facebook javascript SDK
-      (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) { return; }
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-
-      // 初始化Facebook外掛
-      window.fbAsyncInit = function () {
-        FB.init({
-          appId: '841924241107250', // 應用程式編號
-          cookie: true,
-          xfbml: true,
-          version: 'v19.0' // fb版本
-        });
-        FB.AppEvents.logPageView();
-      };
 
       // 登入按鈕
       $(".fb_signin").click(function () {
