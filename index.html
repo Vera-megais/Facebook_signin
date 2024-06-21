@@ -30,7 +30,7 @@
   <p></p>
 
   <script>
-    $(function () {
+    $(window).on('load', function () {
 
       // Facebook javascript SDK
       (function (d, s, id) {
@@ -51,6 +51,10 @@
         });
         FB.AppEvents.logPageView();
       };
+
+    })
+
+    $(function () {
 
       window.FB.getLoginStatus(function (res) {
         console.log(res.status);
