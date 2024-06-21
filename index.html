@@ -52,21 +52,23 @@
         FB.AppEvents.logPageView();
 
         // 判斷登入登出狀態
-        FB.getLoginStatus(function (res) {
-          console.log(res);
-          if (res.status === 'connected') {
-            FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
-              console.log(res);
-              addUser(res.picture.data.url, res.name);
-              localStorage.setItem("facebook_signin", "true");
-            });
-          } else {
-            console.log('尚未登入');
-          }
-        }, {
-          scope: 'email, public_profile',
-          return_scopes: true
-        });
+        setTimeout(() => {
+          FB.getLoginStatus(function (res) {
+            console.log(res);
+            if (res.status === 'connected') {
+              FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
+                console.log(res);
+                addUser(res.picture.data.url, res.name);
+                localStorage.setItem("facebook_signin", "true");
+              });
+            } else {
+              console.log('尚未登入');
+            }
+          }, {
+            scope: 'email, public_profile',
+            return_scopes: true
+          });
+        }, 100)
       };
 
       // 登入按鈕
