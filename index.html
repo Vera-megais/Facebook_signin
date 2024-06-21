@@ -30,7 +30,7 @@
   <p></p>
 
   <script>
-    $(window).on('load', function () {
+    $(function () {
 
       // Facebook javascript SDK
       (function (d, s, id) {
@@ -50,15 +50,10 @@
           version: 'v19.0' // fb版本
         });
         FB.AppEvents.logPageView();
+        FB.getLoginStatus(function (res) {
+          console.log(res.status);
+        });
       };
-
-    })
-
-    $(function () {
-
-      window.FB.getLoginStatus(function (res) {
-        console.log(res.status);
-      });
 
       // 登入按鈕
       $(".fb_signin").click(function () {
