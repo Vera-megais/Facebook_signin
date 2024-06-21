@@ -52,6 +52,10 @@
         FB.AppEvents.logPageView();
       };
 
+      window.FB.getLoginStatus(function (res) {
+        console.log(res.status);
+      });
+
       // 登入按鈕
       $(".fb_signin").click(function () {
         FB.login(function (res) {
