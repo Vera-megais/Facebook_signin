@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook_signin</title>
+
+  <!-- js -->
+  <script src="./js/jquery-3.6.1.min.js"></script>
+</head>
+
+<body>
+
+  <button class="fb_signin">登入Facebook</button>
+  <button class="fb_signout" style="display: none;">登出Google</button>
+  <p class="name"></p>
+  <img src="" alt="" class="img" style="max-width: 50px; max-height: 50px;">
+
+  <script>
+
+    $(window).on('load', function () {
+
+      FB.getLoginStatus(function (res) {
+        if (res.status === 'connected') {
+          FB.api('/me?fields=name,id,email,picture', function (res) {
+            signin(res);
+          });
+        }
+      });
+
+    })
+
+    $(function () {
+
+      // 登入按鈕
+      $(".fb_signin").click(function () {
+        FB.login(function (res) {
+          if (res.status === 'connected') {
+            FB.api('/me?fields=name,id,email,picture', function (res) {
+              signin(res);
+            });
+          }
+        }, {
+          scope: 'email, public_profile',
+          return_scopes: true
+        });
+      })
+
+      // 登出按鈕
+      $(".fb_signout").click(function () {
+        FB.logout(function (res) {
+          signout();
+        });
+      })
+
+
+    })
+
+      // 引入Facebook javascript SDK
+      (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+    // 初始化Facebook外掛
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '498506519210576', // 應用程式編號
+        cookie: true,
+        xfbml: true,
+        version: 'v20.0' // fb版本
+      });
+      FB.AppEvents.logPageView();
+    };
+
+    function signin(useinfo) {
+      document.querySelector(".google_signin").style.display = "none";
+      document.querySelector(".google_signout").style.display = "inline-block";
+      document.querySelector(".name").innerHTML = useinfo.name;
+      document.querySelector(".img").src = useinfo.picture.url;
+    }
+
+    function signout() {
+      document.querySelector(".google_signin").style.display = "inline-block";
+      document.querySelector(".google_signout").style.display = "none";
+      document.querySelector(".name").innerHTML = "";
+      document.querySelector(".img").src = "";
+    }
+
+
+  </script>
+
+</body>
+
+</html>
