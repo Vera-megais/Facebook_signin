@@ -45,8 +45,10 @@
       // 登入按鈕
       $(".fb_signin").click(function () {
         FB.login(function (res) {
+          console.log(res);
           if (res.status === 'connected') {
             FB.api('/me?fields=name,id,email,picture', function (res) {
+              console.log(res);
               signin(res);
             });
           }
@@ -78,6 +80,7 @@
     };
 
     function signin(useinfo) {
+      sessionStorage.setItem("facebook_signin", "true");
       document.querySelector(".google_signin").style.display = "none";
       document.querySelector(".google_signout").style.display = "inline-block";
       document.querySelector(".name").innerHTML = useinfo.name;
@@ -85,6 +88,7 @@
     }
 
     function signout() {
+      sessionStorage.removeItem("facebook_signin");
       document.querySelector(".google_signin").style.display = "inline-block";
       document.querySelector(".google_signout").style.display = "none";
       document.querySelector(".name").innerHTML = "";
