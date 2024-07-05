@@ -49,14 +49,6 @@
           version: 'v20.0' // fb版本
         });
         FB.AppEvents.logPageView();
-
-        FB.getLoginStatus(function (res) {
-          if (res.status === 'connected') {
-            FB.api('/me?fields=name,id,email,picture', function (res) {
-              signin();
-            });
-          }
-        });
       };
 
       // 登入按鈕
@@ -65,7 +57,7 @@
           if (res.status === 'connected') {
             FB.api('/me?fields=name,id,email,picture', function (res) {
               localStorage.setItem("fb_signin", "true");
-              localStorage.setItem("fb_cachedValue", JSON.stringify({ "name": res.name, "img": res.data.url }));
+              localStorage.setItem("fb_cachedValue", JSON.stringify({ "name": res.name, "img": res.picture.data.url }));
               signin();
             });
           }
