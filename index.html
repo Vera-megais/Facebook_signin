@@ -19,28 +19,24 @@
 
   <script>
 
-    $(window).on('load', function () {
+    // 引入Facebook javascript SDK
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) { return; }
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
 
-      // 引入Facebook javascript SDK
-      (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) { return; }
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
+    $(function () {
 
-      window.FB.getLoginStatus(function (res) {
+      FB.getLoginStatus(function (res) {
         if (res.status === 'connected') {
           FB.api('/me?fields=name,id,email,picture', function (res) {
             signin(res);
           });
         }
       });
-
-    })
-
-    $(function () {
 
       // 登入按鈕
       $(".fb_signin").click(function () {
