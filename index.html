@@ -9,20 +9,30 @@
   <!-- js -->
   <script src="./js/jquery-3.6.1.min.js"></script>
 
+  <style>
+    img {
+      width: 100px;
+      height: 100px;
+      display: none;
+    }
+
+    p {
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
 
-  <button class="fb_signin">登入Facebook</button>
-  <button class="fb_signout" style="display: none;">登出Facebook</button>
-  <p class="name"></p>
-  <img src="" alt="" class="img" style="max-width: 50px; max-height: 50px;">
+  <input type="button" class="fb_signin" value="Fackbook登入">
+  <input type="button" class="fb_signout" value="Fackbook登出">
+  <img src="" alt="">
+  <p></p>
 
   <script>
-
     $(function () {
 
-      // 引入Facebook javascript SDK
+      // Facebook javascript SDK
       (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) { return; }
@@ -31,7 +41,7 @@
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
 
-      // 初始化Facebook
+      // 初始化Facebook外掛
       window.fbAsyncInit = function () {
         FB.init({
           appId: '498506519210576', // 應用程式編號
@@ -41,11 +51,17 @@
         });
         FB.AppEvents.logPageView();
 
+        // 判斷登入登出狀態
         FB.getLoginStatus(function (res) {
+          console.log(res);
           if (res.status === 'connected') {
-            FB.api('/me?fields=name,id,email,picture', function (res) {
-              signin(res);
+            FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
+              console.log(res);
+              addUser(res.picture.data.url, res.name);
+              localStorage.setItem("facebook_signin", "true");
             });
+          } else {
+            console.log('尚未登入');
           }
         });
       };
@@ -53,10 +69,15 @@
       // 登入按鈕
       $(".fb_signin").click(function () {
         FB.login(function (res) {
+          console.log(res);
           if (res.status === 'connected') {
-            FB.api('/me?fields=name,id,email,picture', function (res) {
-              signin(res);
+            FB.api('/me?fields=name,id,email,picture,birthday,gender', function (res) {
+              console.log(res);
+              addUser(res.picture.data.url, res.name);
+              localStorage.setItem("facebook_signin", "true");
             });
+          } else {
+            console.log('尚未登入');
           }
         }, {
           scope: 'email, public_profile',
@@ -67,28 +88,33 @@
       // 登出按鈕
       $(".fb_signout").click(function () {
         FB.logout(function (res) {
-          signout();
+          console.log(res);
+          removeUser();
+          localStorage.removeItem("facebook_signin");
         });
       })
 
+      function addUser(img, name) {
+        $("img").css({
+          "display": "block"
+        });
+        $("p").css({
+          "display": "block"
+        });
+        $("img").attr("src", img);
+        $("p").text(name);
+      }
+
+      function removeUser() {
+        $("img").css({
+          "display": "none"
+        });
+        $("p").css({
+          "display": "none"
+        });
+      }
+
     })
-
-    function signin(useinfo) {
-      localStorage.setItem("fb_signin", "true");
-      document.querySelector(".fb_signin").style.display = "none";
-      document.querySelector(".fb_signout").style.display = "inline-block";
-      document.querySelector(".name").innerHTML = useinfo.name;
-      document.querySelector(".img").src = useinfo.picture.data.url;
-    }
-
-    function signout() {
-      localStorage.removeItem("fb_signin");
-      document.querySelector(".fb_signin").style.display = "inline-block";
-      document.querySelector(".fb_signout").style.display = "none";
-      document.querySelector(".name").innerHTML = "";
-      document.querySelector(".img").src = "";
-    }
-
   </script>
 
 </body>
