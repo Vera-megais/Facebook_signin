@@ -57,7 +57,6 @@
           if (res.status === 'connected') {
             FB.api('/me?fields=name,id,email,picture', function (res) {
               localStorage.setItem("fb_signin", "true");
-              console.log(res);
               signin(res);
             });
           }
@@ -81,7 +80,7 @@
       document.querySelector(".fb_signin").style.display = "none";
       document.querySelector(".fb_signout").style.display = "inline-block";
       document.querySelector(".name").innerHTML = useinfo.name;
-      document.querySelector(".img").src = useinfo.picture.date.img;
+      document.querySelector(".img").src = useinfo.picture.date.url;
     }
 
     function signout() {
