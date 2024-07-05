@@ -8,6 +8,7 @@
 
   <!-- js -->
   <script src="./js/jquery-3.6.1.min.js"></script>
+
 </head>
 
 <body>
@@ -45,10 +46,8 @@
       // 登入按鈕
       $(".fb_signin").click(function () {
         FB.login(function (res) {
-          console.log(res);
           if (res.status === 'connected') {
             FB.api('/me?fields=name,id,email,picture', function (res) {
-              console.log(res);
               signin(res);
             });
           }
@@ -65,10 +64,9 @@
         });
       })
 
-
     })
 
-    // 初始化Facebook外掛
+    // 初始化Facebook
     window.fbAsyncInit = function () {
       FB.init({
         appId: '498506519210576', // 應用程式編號
@@ -80,7 +78,7 @@
     };
 
     function signin(useinfo) {
-      sessionStorage.setItem("fb_signin", "true");
+      localStorage.setItem("fb_signin", "true");
       document.querySelector(".fb_signin").style.display = "none";
       document.querySelector(".fb_signout").style.display = "inline-block";
       document.querySelector(".name").innerHTML = useinfo.name;
@@ -88,13 +86,12 @@
     }
 
     function signout() {
-      sessionStorage.removeItem("fb_signin");
+      localStorage.removeItem("fb_signin");
       document.querySelector(".fb_signin").style.display = "inline-block";
       document.querySelector(".fb_signout").style.display = "none";
       document.querySelector(".name").innerHTML = "";
       document.querySelector(".img").src = "";
     }
-
 
   </script>
 
