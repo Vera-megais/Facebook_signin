@@ -41,10 +41,11 @@
         });
         FB.AppEvents.logPageView();
 
+        // 判斷登入登出狀態
         FB.getLoginStatus(function (res) {
           if (res.status === 'connected') {
             FB.api('/me?fields=name,id,email,picture', function (res) {
-              localStorage.setItem("fb_signin", "true");
+              sessionStorage.setItem("fb_signin", "true");
               signin(res);
             });
           }
@@ -56,7 +57,7 @@
         FB.login(function (res) {
           if (res.status === 'connected') {
             FB.api('/me?fields=name,id,email,picture', function (res) {
-              localStorage.setItem("fb_signin", "true");
+              sessionStorage.setItem("fb_signin", "true");
               signin(res);
             });
           }
@@ -69,7 +70,7 @@
       // 登出按鈕
       $(".fb_signout").click(function () {
         FB.logout(function (res) {
-          localStorage.removeItem("fb_signin");
+          sessionStorage.removeItem("fb_signin");
           signout();
         });
       })
