@@ -30,14 +30,6 @@
 
     $(function () {
 
-      FB.getLoginStatus(function (res) {
-        if (res.status === 'connected') {
-          FB.api('/me?fields=name,id,email,picture', function (res) {
-            signin(res);
-          });
-        }
-      });
-
       // 登入按鈕
       $(".fb_signin").click(function () {
         FB.login(function (res) {
@@ -73,6 +65,15 @@
         version: 'v20.0' // fb版本
       });
       FB.AppEvents.logPageView();
+
+      FB.getLoginStatus(function (res) {
+        if (res.status === 'connected') {
+          FB.api('/me?fields=name,id,email,picture', function (res) {
+            signin(res);
+          });
+        }
+      });
+
     };
 
     function signin(useinfo) {
