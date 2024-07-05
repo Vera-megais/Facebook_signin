@@ -13,7 +13,7 @@
 <body>
 
   <button class="fb_signin">登入Facebook</button>
-  <button class="fb_signout" style="display: none;">登出Google</button>
+  <button class="fb_signout" style="display: none;">登出Facebook</button>
   <p class="name"></p>
   <img src="" alt="" class="img" style="max-width: 50px; max-height: 50px;">
 
@@ -27,6 +27,18 @@
       js.src = "https://connect.facebook.net/en_US/sdk.js";
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+
+    $(window).on('load', function () {
+
+      window.FB.getLoginStatus(function (res) {
+        if (res.status === 'connected') {
+          FB.api('/me?fields=name,id,email,picture', function (res) {
+            signin(res);
+          });
+        }
+      });
+
+    })
 
     $(function () {
 
@@ -65,29 +77,20 @@
         version: 'v20.0' // fb版本
       });
       FB.AppEvents.logPageView();
-
-      FB.getLoginStatus(function (res) {
-        if (res.status === 'connected') {
-          FB.api('/me?fields=name,id,email,picture', function (res) {
-            signin(res);
-          });
-        }
-      });
-
     };
 
     function signin(useinfo) {
-      sessionStorage.setItem("facebook_signin", "true");
-      document.querySelector(".google_signin").style.display = "none";
-      document.querySelector(".google_signout").style.display = "inline-block";
+      sessionStorage.setItem("fb_signin", "true");
+      document.querySelector(".fb_signin").style.display = "none";
+      document.querySelector(".fb_signout").style.display = "inline-block";
       document.querySelector(".name").innerHTML = useinfo.name;
       document.querySelector(".img").src = useinfo.picture.url;
     }
 
     function signout() {
-      sessionStorage.removeItem("facebook_signin");
-      document.querySelector(".google_signin").style.display = "inline-block";
-      document.querySelector(".google_signout").style.display = "none";
+      sessionStorage.removeItem("fb_signin");
+      document.querySelector(".fb_signin").style.display = "inline-block";
+      document.querySelector(".fb_signout").style.display = "none";
       document.querySelector(".name").innerHTML = "";
       document.querySelector(".img").src = "";
     }
