@@ -57,6 +57,7 @@
           if (res.status === 'connected') {
             FB.api('/me?fields=name,id,email,picture', function (res) {
               localStorage.setItem("fb_signin", "true");
+              console.log(res);
               signin(res);
             });
           }
