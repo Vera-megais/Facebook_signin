@@ -19,6 +19,15 @@
 
   <script>
 
+    // 引入Facebook javascript SDK
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) { return; }
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
     $(window).on('load', function () {
 
       FB.getLoginStatus(function (res) {
@@ -56,15 +65,6 @@
 
 
     })
-
-      // 引入Facebook javascript SDK
-      (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) { return; }
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
 
     // 初始化Facebook外掛
     window.fbAsyncInit = function () {
