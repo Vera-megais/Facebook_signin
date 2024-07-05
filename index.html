@@ -30,7 +30,7 @@
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
 
-      FB.getLoginStatus(function (res) {
+      window.FB.getLoginStatus(function (res) {
         if (res.status === 'connected') {
           FB.api('/me?fields=name,id,email,picture', function (res) {
             signin(res);
