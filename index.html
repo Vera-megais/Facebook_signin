@@ -44,7 +44,9 @@
         FB.getLoginStatus(function (res) {
           if (res.status === 'connected') {
             FB.api('/me?fields=name,id,email,picture', function (res) {
-              signin(res);
+              localStorage.setItem("fb_signin", "true");
+              localStorage.setItem("fb_cachedValue", JSON.stringify({ "name": res.name, "img": res.data.url }));
+              signin();
             });
           }
         });
@@ -55,7 +57,9 @@
         FB.login(function (res) {
           if (res.status === 'connected') {
             FB.api('/me?fields=name,id,email,picture', function (res) {
-              signin(res);
+              localStorage.setItem("fb_signin", "true");
+              localStorage.setItem("fb_cachedValue", JSON.stringify({ "name": res.name, "img": res.data.url }));
+              signin();
             });
           }
         }, {
@@ -67,22 +71,23 @@
       // 登出按鈕
       $(".fb_signout").click(function () {
         FB.logout(function (res) {
+          localStorage.removeItem("fb_signin");
+          localStorage.removeItem("fb_cachedValue");
           signout();
         });
       })
 
     })
 
-    function signin(useinfo) {
-      localStorage.setItem("fb_signin", "true");
+    function signin() {
+      let useinfo = JSON.parse(localStorage.getItem("fb_cachedValue"));
       document.querySelector(".fb_signin").style.display = "none";
       document.querySelector(".fb_signout").style.display = "inline-block";
       document.querySelector(".name").innerHTML = useinfo.name;
-      document.querySelector(".img").src = useinfo.picture.data.url;
+      document.querySelector(".img").src = useinfo.img;
     }
 
     function signout() {
-      localStorage.removeItem("fb_signin");
       document.querySelector(".fb_signin").style.display = "inline-block";
       document.querySelector(".fb_signout").style.display = "none";
       document.querySelector(".name").innerHTML = "";
