@@ -20,6 +20,15 @@
 
   <script>
 
+    $(window).on('load', function () {
+
+      let login = localStorage.getItem("fb_signin");
+      if (login) {
+        signin();
+      }
+
+    })
+
     $(function () {
 
       // 引入Facebook javascript SDK
@@ -44,8 +53,6 @@
         FB.getLoginStatus(function (res) {
           if (res.status === 'connected') {
             FB.api('/me?fields=name,id,email,picture', function (res) {
-              localStorage.setItem("fb_signin", "true");
-              localStorage.setItem("fb_cachedValue", JSON.stringify({ "name": res.name, "img": res.data.url }));
               signin();
             });
           }
