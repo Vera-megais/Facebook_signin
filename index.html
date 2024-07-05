@@ -29,8 +29,9 @@
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-    $(window).on('load', function () {
+    $(function () {
 
+      // 判斷登入登出狀態
       FB.getLoginStatus(function (res) {
         if (res.status === 'connected') {
           FB.api('/me?fields=name,id,email,picture', function (res) {
@@ -38,10 +39,6 @@
           });
         }
       });
-
-    })
-
-    $(function () {
 
       // 登入按鈕
       $(".fb_signin").click(function () {
