@@ -24,7 +24,18 @@
 
       let login = localStorage.getItem("fb_signin");
       if (login) {
-        signin();
+        FB.login(function (res) {
+          if (res.status === 'connected') {
+            FB.api('/me?fields=name,id,email,picture', function (res) {
+              localStorage.setItem("fb_signin", "true");
+              localStorage.setItem("fb_cachedValue", JSON.stringify({ "name": res.name, "img": res.picture.data.url }));
+              signin();
+            });
+          }
+        }, {
+          scope: 'email, public_profile',
+          return_scopes: true
+        });
       }
 
     })
